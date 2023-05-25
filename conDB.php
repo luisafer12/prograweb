@@ -1,8 +1,8 @@
 <?php
 function get_mysqli() {
   $host = "localhost";
-  $usuario = "rbatista";
-  $contrasenia = "89490162";
+  $usuario = "luisa";
+  $contrasenia = "12345";
   $base_de_datos = "company";
   $mysqli = new mysqli($host, $usuario, $contrasenia, $base_de_datos);
   if ($mysqli->connect_errno) {
