@@ -3,7 +3,7 @@ function get_mysqli() {
   $host = "localhost";
   $usuario = "luisafer";
   $contrasenia = "171299";
-  $base_de_datos = "company";
+  $base_de_datos = "respaldo_company";
   $mysqli = new mysqli($host, $usuario, $contrasenia, $base_de_datos);
   if ($mysqli->connect_errno) {
     echo "Falló la conexión a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
