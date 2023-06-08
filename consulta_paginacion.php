@@ -28,7 +28,7 @@
 
    // Calcular el número total de filas de la tabla
         $sql = "select e.Fname, e.Lname, e.Ssn, e.Bdate, e.Address, d.Dname ";
-		$sql .= "from EMPLOYEE as e inner join DEPARTMENT as d on e.Dno = d.Dnumber order by Lname, Fname";
+		$sql .= "from employee as e inner join department as d on e.Dno = d.Dnumber order by Lname, Fname";
 		
 		$consulta = $con->query($sql);
 	    $nfilas = $consulta->num_rows;
@@ -70,7 +70,7 @@
 
 	  
         $sql = "select e.Fname, e.Lname, e.Ssn, e.Bdate, e.Address, d.Dname ";
-		$sql .= "from EMPLOYEE as e inner join DEPARTMENT as d on e.Dno = d.Dnumber order by Lname, Fname limit ?, ?";
+		$sql .= "from employee as e inner join department as d on e.Dno = d.Dnumber order by Lname, Fname limit ?, ?";
 		$consulta = $con->prepare($sql);
         $consulta->bind_param("ii", $comienzo, $num);
 		$consulta->execute();
