@@ -85,7 +85,7 @@
 			for ($i=0; $i< count ($borrar); $i++)
 			{
 				// Obtener datos del i-esimo empleado
-				$cSql = "select Fname, Lname, Ssn from EMPLOYEE where Ssn = ?";
+				$cSql = "select Fname, Lname, Ssn from employee where Ssn = ?";
 				
 				$consulta = prepared_query($con, $cSql, [$borrar[$i]]);
 				$resultado = $consulta->get_result();
@@ -108,7 +108,7 @@
 				}
 				
 				// borrar el i-esimo empleado seleccionado
-				$cSql = "delete from EMPLOYEE where Ssn = ?";
+				$cSql = "delete from employee where Ssn = ?";
 				try{
 					//place code here that could potentially throw an exception
 					$resultado = prepared_query($con, $cSql, [$borrar[$i]]);
