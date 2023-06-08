@@ -105,7 +105,7 @@
 			print ("</UL>\n");
 			
 			//$params[] = [$fname, $minit, $lname, $bdate, $address, $sex, $salary, $super_ssn, $dno, $ssn];
-		    $cSql = "update EMPLOYEE set Fname = ?, ";
+		    $cSql = "update employee set Fname = ?, ";
 			$cSql .= " Minit = ?, ";
 			$cSql .= " Lname = ?, ";
 			$cSql .= " Bdate = ?, ";
@@ -147,7 +147,7 @@
 		{
 			if (!isset($grabar))
 			{
-				$cSql = "select * from EMPLOYEE where Ssn = ?";
+				$cSql = "select * from employee where Ssn = ?";
 				$consulta = prepared_query($con, $cSql, [$ssn]);
 				$resultado = $consulta->get_result();
 
