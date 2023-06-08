@@ -48,14 +48,14 @@
    if (isset($_REQUEST['grabar'])) {
       // Nombre
       if (trim($fname) == "") {
-         $errores["fname"] = "¡Debe introducir el nombre!";
+         $errores["fname"] = "Â¡Debe introducir el nombre!";
          $error = true;
       }
       else
          $errores["fname"] = "";
       // Apellido
       if (trim($lname) == "") {
-         $errores["lname"] = "¡Debe introducir el apellido!";
+         $errores["lname"] = "Â¡Debe introducir el apellido!";
          $error = true;
       }
       else
@@ -63,7 +63,7 @@
 
       // SSN
       if (trim($ssn) == "") {
-         $errores["ssn"] = "¡Debe introducir el no de seguridad social!";
+         $errores["ssn"] = "Â¡Debe introducir el no de seguridad social!";
          $error = true;
       }
       else
@@ -71,7 +71,7 @@
       
 	  // Departamento
       if (trim($dno) == "") {
-         $errores["dno"] = "¡Debe introducir el no de departamento!";
+         $errores["dno"] = "Â¡Debe introducir el no de departamento!";
          $error = true;
       }
       else
@@ -88,14 +88,14 @@
       print ("   <LI>Apellido: $lname\n");
       print ("   <LI>No. Seguro Social: $ssn\n");
       print ("   <LI>Fec. Nacimiento: $bdate\n");
-      print ("   <LI>Dirección: $address\n");
+      print ("   <LI>DirecciÃ³n: $address\n");
       print ("   <LI>Sexo: $sex\n");
       print ("   <LI>Salario: $salary\n"); 
       print ("   <LI>Supervisor: $super_ssn\n");
       print ("   <LI>No. Departamento: $dno\n");
       print ("</UL>\n");
 	  $params = array();
-		$cols = "insert into EMPLOYEE (Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary,";
+		$cols = "insert into employee (Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary,";
 		$vals = "values (?, ?, ?, ?, ?, ?, ?, ?,";
 		
 		$params[] = $fname;
@@ -124,7 +124,7 @@
                printf("Error al insertar registro: %s<br />", $con->error);
         }
 		else {
-			print ("<P><B>Registro Realizado con Éxito</B></P>\n");
+			print ("<P><B>Registro Realizado con Ã‰xito</B></P>\n");
 		}
       print ("<BR><P>[ <A HREF='regemp.php'>Nuevo reistro</A> ]</P>\n");
    }
@@ -176,7 +176,7 @@
 
 <P><LABEL>Fec. Nacimiento:</LABEL>
 <INPUT TYPE="TEXT" SIZE="20" NAME="bdate"></P>
-<P><LABEL>Dirección:</LABEL>
+<P><LABEL>DirecciÃ³n:</LABEL>
 <INPUT TYPE="TEXT" SIZE="40" NAME="address"></P>
 
 <P><LABEL>Genero:</LABEL>
