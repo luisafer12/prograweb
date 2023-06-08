@@ -143,7 +143,7 @@
 				//Realizar consulta
 				
 				$cSql = "select e.Fname, e.Lname, e.Ssn, e.Bdate, e.Address, d.Dname ";
-				$cSql .= " from EMPLOYEE as e inner join DEPARTMENT as d on e.Dno = d.Dnumber ";
+				$cSql .= " from employee as e inner join department as d on e.Dno = d.Dnumber ";
 
 				$params = array();
 				
