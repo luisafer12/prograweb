@@ -1,0 +1,112 @@
+<!-- Archivo: index.html -->
+
+<HEAD>
+    <TITLE>La Company</TITLE>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <meta charset= "UTF-8">
+</HEAD>
+<main class="container grid container_add1">
+    <form class="borde" id="consultaForm">
+        <h1>Consulta un empleado</h1>
+
+        <p><label>Nombre:</label>
+            <input type="text" size="40" name="fname"></p>
+        <p><label>Apellido:</label>
+            <input type="text" size="40" name="lname"></p>
+        <p><label>Seguro Social:</label>
+            <input type="text" size="20" name="ssn"></p>
+        <p><label>Departamento:</label>
+            <select name="dno" id="departamentosSelect">
+                <option value="">--- Seleccione Uno ---</option>
+            </select></p>
+
+        <p><input type="submit" value="Consultar" id="btnConsultar"></p>
+        <button type="button" id="btnObtenerEmpleados">Obtener todos los empleados</button>
+
+
+    </form>
+    <div id="resultadoConsulta"></div>
+
+</main>
+
+<script>
+    // Cargar los departamentos al cargar la página
+    window.addEventListener("load", function() {
+        // Realizar la solicitud AJAX a la API para obtener los departamentos
+        fetch("api.php?get_departments=true")
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function(data) {
+                // Generar las opciones del select con los departamentos recibidos
+                var departamentosSelect = document.getElementById("departamentosSelect");
+                data.forEach(function(department) {
+                    var option = document.createElement("option");
+                    option.value = department.Dnumber;
+                    option.textContent = department.Dname;
+                    departamentosSelect.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    });
+
+    // Manejar el evento de clic del botón "Obtener todos los empleados"
+    document.getElementById("btnObtenerEmpleados").addEventListener("click", function() {
+        // Realizar la solicitud AJAX a la API para obtener todos los empleados
+        fetch("api.php?get_all_employees=true")
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function(data) {
+                // Mostrar los datos de todos los empleados en formato JSON
+                var jsonHtml = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                document.getElementById("resultadoConsulta").innerHTML = jsonHtml;
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    });
+
+    // Manejar el evento de clic del botón "Consultar"
+    document.getElementById("btnConsultar").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        // Obtener los valores de los campos de búsqueda
+        var fname = document.getElementsByName("fname")[0].value;
+        var lname = document.getElementsByName("lname")[0].value;
+        var ssn = document.getElementsByName("ssn")[0].value;
+        var dno = document.getElementsByName("dno")[0].value;
+
+        // Construir la URL de la API con los parámetros de búsqueda
+        var url = "api.php?fname=" + fname + "&lname=" + lname + "&ssn=" + ssn + "&dno=" + dno;
+
+        // Realizar la solicitud AJAX a la API utilizando fetch
+        fetch(url)
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json(); // Obtener la respuesta como JSON
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function(data) {
+                // Mostrar los datos del empleado en formato JSON
+                var jsonHtml = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                document.getElementById("resultadoConsulta").innerHTML = jsonHtml;
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    });
+</script>
