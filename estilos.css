@@ -1,0 +1,19 @@
+.container_add{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_add1{
+
+    padding: 2rem;
+
+}
+
+
+.btn{
+
+    width: 600px;
+}
