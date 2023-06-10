@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Actualizar empleado</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="stylesheet" href="estilos.css">
+  <meta charset="UTF-8">
+</head>
+
+<body>
+<main class="container grid container_add1">
+
+  <form id="formularioActualizar">
+    <h2>Actualizar empleado</h2>
+    <label for="ssn">SSN:</label>
+    <input type="text" name="ssn" id="ssn" required>
+    <br>
+    <label for="fname">Nombre:</label>
+    <input type="text" name="fname" id="fname" required>
+    <br>
+    <label for="lname">Apellido:</label>
+    <input type="text" name="lname" id="lname" required>
+    <br>
+    <label for="dno">Departamento:</label>
+    <select name="dno" id="dno" required>
+      <!-- Opciones de departamentos -->
+    </select>
+    <br>
+    <button type="submit">Actualizar</button>
+  </form>
+
+  <div id="resultadoActualizacion"></div>
+
+</main>
+
+<script>
+  // Función para generar las opciones del select con los departamentos
+  function generarOpcionesDepartamentos(departamentos) {
+    var select = document.getElementById("dno");
+
+    // Limpiar las opciones existentes
+    select.innerHTML = "";
+
+    // Generar las opciones con los departamentos recibidos
+    departamentos.forEach(function (department) {
+      var option = document.createElement("option");
+      option.value = department.Dnumber;
+      option.textContent = department.Dname;
+      select.appendChild(option);
+    });
+  }
+
+  // Cargar los departamentos al cargar la página
+  window.addEventListener("load", function () {
+    // Realizar la solicitud AJAX a la API para obtener los departamentos
+    fetch("api.php?get_departments=true")
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud: " + response.status);
+              }
+            })
+            .then(function (data) {
+              // Generar las opciones del select con los departamentos recibidos
+              generarOpcionesDepartamentos(data);
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+  });
+
+  // Manejar el evento de envío del formulario de actualización
+  document.getElementById("formularioActualizar").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevenir el envío del formulario
+
+    // Obtener los valores del formulario
+    var ssn = document.getElementById("ssn").value;
+    var fname = document.getElementById("fname").value;
+    var lname = document.getElementById("lname").value;
+    var dno = document.getElementById("dno").value;
+
+    // Crear un objeto con los datos del empleado a actualizar
+    var empleado = {
+      ssn: ssn,
+      fname: fname,
+      lname: lname,
+      dno: dno
+    };
+
+    // Realizar la solicitud AJAX para actualizar el empleado
+    fetch("api.php", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(empleado)
+    })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud: " + response.status);
+              }
+            })
+            .then(function (data) {
+              // Mostrar la respuesta JSON actualizada
+              var jsonHtml = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+              document.getElementById("resultadoActualizacion").innerHTML = jsonHtml;
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+  });
+</script>
+</body>
+
+</html>
