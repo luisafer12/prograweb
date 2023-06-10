@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Eliminar empleado</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<main class="container grid container_add1">
+
+    <form id="formularioEliminar">
+        <h2>Eliminar empleado</h2>
+        <label for="ssn">SSN:</label>
+        <input type="text" name="ssn" id="ssn" required>
+        <br>
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <div id="resultadoEliminacion"></div>
+
+</main>
+
+<script>
+    // Manejar el evento de envío del formulario de eliminación
+    document.getElementById("formularioEliminar").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        // Obtener el valor del campo SSN
+        var ssn = document.getElementById("ssn").value;
+
+        // Realizar la solicitud AJAX para eliminar el empleado
+        fetch("api.php", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ssn: ssn
+            })
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function (data) {
+                // Mostrar la respuesta JSON de la eliminación
+                var jsonHtml = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                document.getElementById("resultadoEliminacion").innerHTML = jsonHtml;
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    });
+</script>
+
+</body>
+
+</html>
