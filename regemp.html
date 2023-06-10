@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>La Company - Registro de Empleado</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <meta charset="UTF-8">
+</head>
+<body>
+<main class="container grid container_add1">
+    <form class="borde" id="registroForm" method="POST">
+        <h1>Registra un empleado</h1>
+
+        <p><label>Nombre:</label>
+            <input type="text" size="40" name="fname" required></p>
+        <p><label>Apellido:</label>
+            <input type="text" size="40" name="lname" required></p>
+        <p><label>Seguro Social:</label>
+            <input type="text" size="20" name="ssn" required></p>
+        <p><label>Departamento:</label>
+            <select name="dno" id="departamentosSelect" required>
+                <option value="">--- Seleccione Uno ---</option>
+            </select></p>
+
+        <p><input type="submit" value="Registrar" id="btnRegistrar"></p>
+    </form>
+    <div id="resultadoRegistro"></div>
+
+</main>
+
+<script>
+    // Cargar los departamentos al cargar la página
+    window.addEventListener("load", function() {
+        // Realizar la solicitud AJAX a la API para obtener los departamentos
+        fetch("api.php?get_departments=true")
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function(data) {
+                // Generar las opciones del select con los departamentos recibidos
+                var departamentosSelect = document.getElementById("departamentosSelect");
+                data.forEach(function(department) {
+                    var option = document.createElement("option");
+                    option.value = department.Dnumber;
+                    option.textContent = department.Dname;
+                    departamentosSelect.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    });
+
+    // Manejar el evento de envío del formulario
+    document.getElementById("registroForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        // Obtener los valores del formulario
+        var fname = document.getElementsByName("fname")[0].value;
+        var lname = document.getElementsByName("lname")[0].value;
+        var ssn = document.getElementsByName("ssn")[0].value;
+        var dno = document.getElementsByName("dno")[0].value;
+
+        // Construir el objeto de datos para enviar en la solicitud AJAX
+        var data = {
+            register_employee: true,
+            fname: fname,
+            lname: lname,
+            ssn: ssn,
+            dno: dno
+        };
+
+        // Realizar la solicitud AJAX para registrar el empleado
+        fetch("api.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+            })
+            .then(function(responseData) {
+                // Convertir el JSON recibido a una cadena formateada
+                var jsonText = JSON.stringify(responseData, null, 4);
+
+                // Mostrar el JSON en el elemento resultadoRegistro
+                var resultadoRegistro = document.getElementById("resultadoRegistro");
+                resultadoRegistro.innerHTML = "<pre>" + jsonText + "</pre>";
+                resultadoRegistro.style.display = "block";
+                resultadoRegistro.className = responseData.success ? "success" : "error";
+
+                // Limpiar el formulario después del registro exitoso
+                if (responseData.success) {
+                    document.getElementById("registroForm").reset();
+                }
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    });
+</script>
+
+</body>
+</html>
